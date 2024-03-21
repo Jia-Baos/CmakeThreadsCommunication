@@ -21,7 +21,8 @@ std::binary_semaphore bsem(0);
 // semaphore release = condition_variable notify
 void task(int idx) {
   std::cout << "task " << idx << ": ready to receive signal" << std::endl;
-  csem.acquire();
+  csem.acquire();  // 若内部计数器大于 ​0​ 则尝试将它减少 1；否则阻塞直至它大于 ​0​
+                   // 且能成功减少内部计数器
   std::cout << "task " << idx << ": has received signal" << std::endl;
 }
 
@@ -32,9 +33,8 @@ int main(int argc, const char *argv[]) {
   std::thread t4(task, 4);
   std::thread t5(task, 5);
 
-  // 发出信号后，速度最快的三个线程得到信号并执行任务
   std::cout << "main: ready to signal, release" << std::endl;
-  csem.release(3);
+  csem.release(3);  // 发出信号后，速度最快的三个线程得到信号并执行任务，之后由于内部计数器为0，剩余task继续阻塞
   std::cout << "main: signal end" << std::endl;
 
   t1.join();
@@ -42,5 +42,6 @@ int main(int argc, const char *argv[]) {
   t3.join();
   t4.join();
   t5.join();
+
   return 0;
 }

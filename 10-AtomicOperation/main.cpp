@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @author Jia-Baos (18383827268@163.com)
- * @brief 原子操作，
+ * @brief 原子操作
  * @version 0.1
  * @date 2024-03-18
  *
@@ -30,7 +30,8 @@ int main(int argc, char *argv[]) {
     pool.emplace_back(func);
   }
 
-  std::cout << "原子计数为：" << acnt << std::endl;
-  std::cout << "非原子计数为：" << cnt << std::endl;
+  std::cout << "The atomic counter is " << acnt << std::endl;
+  std::cout << "The non-atomic counter is " << cnt << std::endl;
+
   return 0;
 }

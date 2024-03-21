@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @author Jia-Baos (18383827268@163.com)
- * @brief 通过条件变量实现线程间通信
+ * @brief 通过条件变量实现线程间通信，下述示例中消费者、生产者严格按照顺序执行
  * @version 0.1
  * @date 2024-03-16
  *
@@ -23,8 +23,9 @@ int productNum = 5;
 void Producer() {
   for (int i = 1; i <= productNum; ++i) {
     std::unique_lock<std::mutex> lock(mtx);
+    // vec 不为空时等待线程锁（阻塞当前线程）。其他线程锁释放时，当前线程继续执行
     while (!vec.empty()) {
-      cv.wait(lock);  // vec 不为空时阻塞当前线程
+      cv.wait(lock);
     }
     vec.push_back(i);
     std::cout << "Producer procuding: " << i << std::endl;
@@ -34,14 +35,17 @@ void Producer() {
 
 void Consumer() {
   while (true) {
-    std::unique_lock<std::mutex> lock(mtx);  // vec 为空时等待线程锁。其他线程锁释放时，当前线程继续执行
+    std::unique_lock<std::mutex> lock(mtx);
+
+    // vec 为空时等待线程锁（阻塞当前线程）。其他线程锁释放时，当前线程继续执行
     while (vec.empty()) {
       cv.wait(lock);
     }
     int data = vec.back();
     vec.pop_back();
     std::cout << "Consumer comsuming: " << data << std::endl;
-    cv.notify_all();
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+    cv.notify_all();  // 释放线程锁
   }
 }
 

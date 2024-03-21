@@ -58,6 +58,6 @@ class MessageQueue {
 
  private:
   std::mutex m_mtx;              // 互斥量
-  std::queue<T> m_queue;         // 队列
+  std::queue<T> m_queue;         // 消息队列
   std::condition_variable m_cv;  // 条件变量
 };
