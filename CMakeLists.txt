@@ -15,7 +15,7 @@ message(STATUS "Project Name: ${PROJECT_NAME}")
 message(STATUS "Project Dir: ${CMAKE_CURRENT_SOURCE_DIR}")
 
 # 将源代码添加到此项目的可执行文件。
-aux_source_directory(${CMAKE_SOURCE_DIR}/src main_files)
+aux_source_directory(${CMAKE_SOURCE_DIR}/11-Demo1 main_files)
 add_executable(main ${main_files})
 
 set_target_properties(main

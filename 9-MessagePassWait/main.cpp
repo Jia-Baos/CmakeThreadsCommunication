@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   // 启动线程
   std::thread t1([&]() {
     MyMessage msg;
-    while (1) {
+    while (true) {
       // 等待队列的消息
       mq.wait(msg);
       printf("receive message type:%d\n", msg.type);
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
   // 发送消息给线程
   MyMessage msg;
   printf("send number message to thread.1001 exit\n");
-  while (1) {
+  while (true) {
     scanf("%d", &msg.type);
     mq.push(msg);
     if (msg.type == 1001) break;
